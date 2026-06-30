@@ -1,1 +1,31 @@
+<header class="brandpoint-header">
+  <div class="container">
+    <div class="brandpoint-logo">
+      <a href="{{ routes.root_url }}">{{ shop.name }}</a>
+    </div>
 
+    <nav class="brandpoint-nav">
+      <a href="/">Home</a>
+      <a href="/collections/all">Shop</a>
+      <a href="/pages/about">About</a>
+      <a href="/pages/contact">Contact</a>
+    </nav>
+
+    <div class="brandpoint-icons">
+      <a href="/search">🔍</a>
+      <a href="/cart">🛒</a>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "BrandPoint Header",
+  "settings": [],
+  "presets": [
+    {
+      "name": "BrandPoint Header"
+    }
+  ]
+}
+{% endschema %}
