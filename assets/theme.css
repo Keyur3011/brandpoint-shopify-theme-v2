@@ -1,1 +1,78 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
+body{
+  font-family:Arial,sans-serif;
+  background:#fff;
+  color:#111;
+}
+
+.container{
+  width:90%;
+  max-width:1400px;
+  margin:auto;
+}
+
+.brandpoint-header{
+  background:#000;
+  color:#fff;
+  padding:18px 0;
+  position:sticky;
+  top:0;
+  z-index:999;
+}
+
+.brandpoint-header .container{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.brandpoint-logo a{
+  color:#fff;
+  text-decoration:none;
+  font-size:28px;
+  font-weight:700;
+}
+
+.brandpoint-nav{
+  display:flex;
+  gap:30px;
+}
+
+.brandpoint-nav a{
+  color:#fff;
+  text-decoration:none;
+  font-size:16px;
+  transition:.3s;
+}
+
+.brandpoint-nav a:hover{
+  color:#d4af37;
+}
+
+.brandpoint-icons{
+  display:flex;
+  gap:18px;
+}
+
+.brandpoint-icons a{
+  color:#fff;
+  text-decoration:none;
+  font-size:20px;
+}
+
+@media(max-width:768px){
+
+.brandpoint-nav{
+display:none;
+}
+
+.brandpoint-logo a{
+font-size:22px;
+}
+
+}
