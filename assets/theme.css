@@ -76,3 +76,38 @@ font-size:22px;
 }
 
 }
+.brandpoint-hero{
+  min-height:80vh;
+  display:flex;
+  align-items:center;
+  background:#111;
+  color:#fff;
+}
+
+.hero-content{
+  max-width:600px;
+}
+
+.hero-content h1{
+  font-size:60px;
+  margin-bottom:20px;
+}
+
+.hero-content p{
+  font-size:20px;
+  margin-bottom:30px;
+}
+
+.hero-btn{
+  display:inline-block;
+  padding:14px 30px;
+  background:#d4af37;
+  color:#000;
+  text-decoration:none;
+  font-weight:bold;
+  border-radius:8px;
+}
+
+.hero-btn:hover{
+  opacity:.9;
+}
