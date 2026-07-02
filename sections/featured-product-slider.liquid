@@ -1,0 +1,236 @@
+<section class="bp-featured-slider">
+  <div class="page-width">
+
+    <div class="bp-section-heading">
+      <span>FEATURED PRODUCTS</span>
+      <h2>Trending Right Now</h2>
+      <p>Handpicked premium products from BrandPoint.</p>
+    </div>
+
+    {% assign collection = collections[section.settings.collection] %}
+
+    <div class="bp-slider">
+
+      {% if collection != blank %}
+
+        {% for product in collection.products limit: section.settings.products_to_show %}
+
+          <div class="bp-slide">
+
+            <a href="{{ product.url }}" class="bp-slide-card">
+
+              <div class="bp-slide-image">
+
+                {% if product.featured_image %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 900 }}"
+                    alt="{{ product.title }}"
+                    loading="lazy">
+                {% endif %}
+
+                {% if product.compare_at_price > product.price %}
+                  <span class="bp-sale-badge">
+                    SALE
+                  </span>
+                {% endif %}
+
+              </div>
+
+              <div class="bp-slide-content">
+
+                <h3>{{ product.title }}</h3>
+
+                <div class="bp-price-row">
+
+                  <span class="bp-price">
+                    {{ product.price | money }}
+                  </span>
+
+                  {% if product.compare_at_price > product.price %}
+                    <del>
+                      {{ product.compare_at_price | money }}
+                    </del>
+                  {% endif %}
+
+                </div>
+                <div class="bp-rating">
+                  ★★★★★
+                </div>
+
+                <button class="bp-add-cart">
+                  Add to Cart
+                </button>
+
+              </div>
+
+            </a>
+
+          </div>
+
+        {% endfor %}
+
+      {% endif %}
+
+    </div>
+
+  </div>
+
+  <style>
+
+    .bp-featured-slider{
+      padding:100px 0;
+      background:#ffffff;
+    }
+
+    .bp-slider{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:30px;
+    }
+
+    .bp-slide{
+      background:#fff;
+      border-radius:20px;
+      overflow:hidden;
+      border:1px solid #ececec;
+      transition:.35s;
+    }
+
+    .bp-slide:hover{
+      transform:translateY(-8px);
+      box-shadow:0 20px 45px rgba(0,0,0,.08);
+    }
+
+    .bp-slide-image{
+      position:relative;
+      overflow:hidden;
+    }
+
+    .bp-slide-image img{
+      width:100%;
+      aspect-ratio:4/5;
+      object-fit:cover;
+      transition:.4s;
+    }
+
+    .bp-slide:hover img{
+      transform:scale(1.06);
+    }
+
+    .bp-sale-badge{
+      position:absolute;
+      top:15px;
+      left:15px;
+      background:#c8a96a;
+      color:#fff;
+      padding:6px 12px;
+      border-radius:20px;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .bp-slide-content{
+      padding:20px;
+    }
+
+    .bp-slide-content h3{
+      font-size:20px;
+      margin-bottom:10px;
+      color:#111;
+    }
+
+    .bp-price-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:12px;
+    }
+
+    .bp-price{
+      color:#c8a96a;
+      font-weight:700;
+      font-size:20px;
+    }
+
+    .bp-price-row del{
+      color:#888;
+      font-size:15px;
+    }
+
+    .bp-rating{
+      color:#f5b301;
+      margin-bottom:18px;
+      font-size:15px;
+    }
+
+    .bp-add-cart{
+      width:100%;
+      padding:14px;
+      background:#000;
+      color:#fff;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      transition:.3s;
+    }
+
+    .bp-add-cart:hover{
+      background:#c8a96a;
+    }
+    @media screen and (max-width:990px){
+
+      .bp-slider{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+    }
+
+    @media screen and (max-width:749px){
+
+      .bp-featured-slider{
+        padding:60px 0;
+      }
+
+      .bp-slider{
+        grid-template-columns:1fr;
+        gap:20px;
+      }
+
+      .bp-slide-content h3{
+        font-size:18px;
+      }
+
+      .bp-add-cart{
+        padding:12px;
+      }
+
+    }
+
+  </style>
+
+{% schema %}
+{
+  "name": "BrandPoint Featured Slider",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "BrandPoint Featured Slider"
+    }
+  ]
+}
+{% endschema %}
