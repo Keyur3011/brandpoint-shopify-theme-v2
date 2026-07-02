@@ -1,21 +1,51 @@
-<section class="brandpoint-hero">
-  <div class="container">
-    <div class="hero-content">
-      <h1>Premium Fashion Collection</h1>
-      <p>Discover the latest trends with BrandPoint.</p>
-      <a href="/collections/all" class="hero-btn">Shop Now</a>
-    </div>
-  </div>
-</section>
+<section class="bp-hero">
+  <div class="bp-hero__overlay"></div>
 
-{% schema %}
-{
-  "name": "Hero Banner",
-  "settings": [],
-  "presets": [
-    {
-      "name": "Hero Banner"
-    }
-  ]
-}
-{% endschema %}
+  {% if section.settings.hero_image != blank %}
+    <img
+      src="{{ section.settings.hero_image | image_url: width: 2400 }}"
+      alt="{{ section.settings.heading }}"
+      class="bp-hero__image"
+      loading="eager"
+      width="2400"
+      height="1400">
+  {% endif %}
+
+  <div class="page-width">
+    <div class="bp-hero__content">
+
+      {% if section.settings.badge != blank %}
+        <span class="bp-hero__badge">
+          {{ section.settings.badge }}
+        </span>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h1 class="bp-hero__title">
+          {{ section.settings.heading }}
+        </h1>
+      {% endif %}
+
+      {% if section.settings.text != blank %}
+        <div class="bp-hero__text">
+          {{ section.settings.text }}
+        </div>
+      {% endif %}
+
+      <div class="bp-hero__buttons">
+
+        {% if section.settings.button_label != blank %}
+          <a href="{{ section.settings.button_link }}"
+             class="bp-btn bp-btn--white">
+            {{ section.settings.button_label }}
+          </a>
+        {% endif %}
+
+        {% if section.settings.button2_label != blank %}
+          <a href="{{ section.settings.button2_link }}"
+             class="bp-btn bp-btn--outline">
+            {{ section.settings.button2_label }}
+          </a>
+        {% endif %}
+
+      </div>
