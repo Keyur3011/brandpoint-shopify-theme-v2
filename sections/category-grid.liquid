@@ -1,37 +1,38 @@
-<section class="brandpoint-categories">
-  <div class="container">
-    <h2>Shop By Category</h2>
+<section class="bp-category">
+  <div class="page-width">
 
-    <div class="category-grid">
+    <div class="bp-section-heading">
+      <span>SHOP BY CATEGORY</span>
+      <h2>Find Your Style</h2>
+      <p>Explore our premium collections.</p>
+    </div>
 
-      <a href="/collections/men" class="category-card">
-        <h3>Men</h3>
+    <div class="bp-category-grid">
+
+      {% for block in section.blocks %}
+
+      <a href="{{ block.settings.link }}"
+         class="bp-category-card"
+         {{ block.shopify_attributes }}>
+
+        {% if block.settings.image != blank %}
+          <img
+            src="{{ block.settings.image | image_url: width: 900 }}"
+            alt="{{ block.settings.title }}"
+            loading="lazy"
+            width="900"
+            height="900">
+        {% endif %}
+
+        <div class="bp-category-content">
+          <h3>{{ block.settings.title }}</h3>
+          <span>Explore →</span>
+        </div>
+
       </a>
 
-      <a href="/collections/women" class="category-card">
-        <h3>Women</h3>
-      </a>
-
-      <a href="/collections/accessories" class="category-card">
-        <h3>Accessories</h3>
-      </a>
-
-      <a href="/collections/new-arrivals" class="category-card">
-        <h3>New Arrivals</h3>
-      </a>
+      {% endfor %}
 
     </div>
-  </div>
-</section>
 
-{% schema %}
-{
-  "name": "Category Grid",
-  "settings": [],
-  "presets": [
-    {
-      "name": "Category Grid"
-    }
-  ]
-}
-{% endschema %}
+  </div>
