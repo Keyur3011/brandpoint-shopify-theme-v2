@@ -1,0 +1,146 @@
+<section class="bp-best-sellers">
+  <div class="page-width">
+
+    <div class="bp-section-heading">
+      <span>BEST SELLERS</span>
+      <h2>Most Loved Products</h2>
+      <p>Our customers' favourite picks.</p>
+    </div>
+
+    {% assign collection = collections[section.settings.collection] %}
+
+    <div class="bp-products-grid">
+
+      {% if collection != blank %}
+
+        {% for product in collection.products limit: section.settings.products_to_show %}
+
+          <div class="bp-product-card">
+
+            <a href="{{ product.url }}">
+
+              {% if product.featured_image %}
+                <img
+                  src="{{ product.featured_image | image_url: width: 900 }}"
+                  alt="{{ product.title }}"
+                  loading="lazy">
+              {% endif %}
+
+              <h3>{{ product.title }}</h3>
+
+              <div class="bp-price">
+                {{ product.price | money }}
+              </div>
+
+            </a>
+
+          </div>
+
+        {% endfor %}
+
+      {% endif %}
+
+    </div>
+
+  </div>
+
+  <style>
+
+    .bp-best-sellers{
+      padding:90px 0;
+      background:#f8f8f8;
+    }
+
+    .bp-products-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:30px;
+    }
+    .bp-product-card{
+      background:#fff;
+      border-radius:18px;
+      overflow:hidden;
+      transition:.35s;
+      border:1px solid #eaeaea;
+    }
+
+    .bp-product-card:hover{
+      transform:translateY(-8px);
+      box-shadow:0 20px 40px rgba(0,0,0,.08);
+    }
+
+    .bp-product-card a{
+      display:block;
+      color:#111;
+      text-decoration:none;
+    }
+
+    .bp-product-card img{
+      width:100%;
+      aspect-ratio:4/5;
+      object-fit:cover;
+      display:block;
+    }
+
+    .bp-product-card h3{
+      padding:18px 18px 8px;
+      font-size:20px;
+      font-weight:600;
+      color:#111;
+    }
+
+    .bp-price{
+      padding:0 18px 22px;
+      font-size:18px;
+      font-weight:700;
+      color:#c8a96a;
+    }
+
+    @media screen and (max-width:990px){
+      .bp-products-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media screen and (max-width:749px){
+
+      .bp-best-sellers{
+        padding:60px 0;
+      }
+
+      .bp-products-grid{
+        grid-template-columns:1fr;
+        gap:20px;
+      }
+
+    }
+
+  </style>
+
+{% schema %}
+{
+  "name": "BrandPoint Best Sellers",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "BrandPoint Best Sellers"
+    }
+  ]
+}
+{% endschema %}
+
