@@ -1,0 +1,186 @@
+<section class="bp-testimonials">
+  <div class="page-width">
+
+    <div class="bp-section-heading">
+      <span>TESTIMONIALS</span>
+      <h2>What Our Customers Say</h2>
+      <p>Real experiences from BrandPoint customers.</p>
+    </div>
+
+    <div class="bp-testimonial-grid">
+
+      {% for block in section.blocks %}
+
+        <div class="bp-testimonial-card" {{ block.shopify_attributes }}>
+
+          <div class="bp-stars">
+            ★★★★★
+          </div>
+
+          <p class="bp-review">
+            {{ block.settings.review }}
+          </p>
+
+          <div class="bp-customer">
+            {% if block.settings.image != blank %}
+              <img
+                src="{{ block.settings.image | image_url: width: 120 }}"
+                alt="{{ block.settings.name }}"
+                width="60"
+                height="60">
+            {% endif %}
+
+            <div>
+              <strong>{{ block.settings.name }}</strong>
+              <span>{{ block.settings.city }}</span>
+            </div>
+          </div>
+
+        </div>
+
+      {% endfor %}
+
+    </div>
+
+  </div>
+    <style>
+
+    .bp-testimonials{
+      padding:100px 0;
+      background:#f8f8f8;
+    }
+
+    .bp-testimonial-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:30px;
+    }
+
+    .bp-testimonial-card{
+      background:#fff;
+      padding:35px;
+      border-radius:20px;
+      border:1px solid #ececec;
+      transition:.35s;
+    }
+
+    .bp-testimonial-card:hover{
+      transform:translateY(-8px);
+      box-shadow:0 20px 40px rgba(0,0,0,.08);
+    }
+
+    .bp-stars{
+      color:#d4af37;
+      font-size:20px;
+      margin-bottom:20px;
+    }
+
+    .bp-review{
+      color:#555;
+      line-height:1.8;
+      margin-bottom:25px;
+      font-size:16px;
+    }
+
+    .bp-customer{
+      display:flex;
+      align-items:center;
+      gap:15px;
+    }
+
+    .bp-customer img{
+      width:60px;
+      height:60px;
+      border-radius:50%;
+      object-fit:cover;
+    }
+
+    .bp-customer strong{
+      display:block;
+      color:#111;
+      font-size:17px;
+    }
+
+    .bp-customer span{
+      color:#888;
+      font-size:14px;
+    }
+
+    @media(max-width:990px){
+      .bp-testimonial-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media(max-width:749px){
+
+      .bp-testimonials{
+        padding:60px 0;
+      }
+
+      .bp-testimonial-grid{
+        grid-template-columns:1fr;
+        gap:20px;
+      }
+
+      .bp-testimonial-card{
+        padding:25px;
+      }
+
+    }
+
+  </style>
+
+{% schema %}
+{
+  "name": "BrandPoint Testimonials",
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Customer Photo"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer Name",
+          "default": "John Smith"
+        },
+        {
+          "type": "text",
+          "id": "city",
+          "label": "City",
+          "default": "Mumbai"
+        },
+                {
+          "type": "textarea",
+          "id": "review",
+          "label": "Review",
+          "default": "Excellent quality and fast delivery. I will definitely shop again!"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "BrandPoint Testimonials",
+      "blocks": [
+        {
+          "type": "review"
+        },
+        {
+          "type": "review"
+        },
+        {
+          "type": "review"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
