@@ -1,1 +1,49 @@
+<footer class="brandpoint-footer">
+  <div class="container">
 
+    <div class="footer-grid">
+
+      <div class="footer-column">
+        <h2>{{ shop.name }}</h2>
+        <p>Premium fashion and lifestyle brand.</p>
+      </div>
+
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/collections/all">Shop</a></li>
+          <li><a href="/pages/about">About</a></li>
+          <li><a href="/pages/contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="/pages/privacy-policy">Privacy Policy</a></li>
+          <li><a href="/pages/terms-of-service">Terms & Conditions</a></li>
+          <li><a href="/pages/refund-policy">Refund Policy</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All Rights Reserved.</p>
+    </div>
+
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "BrandPoint Footer",
+  "settings": [],
+  "presets": [
+    {
+      "name": "BrandPoint Footer"
+    }
+  ]
+}
+{% endschema %}
