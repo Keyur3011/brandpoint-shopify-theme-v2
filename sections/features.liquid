@@ -1,0 +1,165 @@
+<section class="bp-features">
+  <div class="page-width">
+
+    <div class="bp-features-grid">
+
+      {% for block in section.blocks %}
+
+        <div class="bp-feature" {{ block.shopify_attributes }}>
+
+          {% if block.settings.icon != blank %}
+            <img
+              src="{{ block.settings.icon | image_url: width: 120 }}"
+              alt="{{ block.settings.title }}"
+              class="bp-feature__icon"
+              loading="lazy"
+              width="60"
+              height="60">
+          {% endif %}
+
+          <h3>{{ block.settings.title }}</h3>
+
+          <p>{{ block.settings.text }}</p>
+
+        </div>
+
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+  <style>
+
+    .bp-features{
+      padding:80px 0;
+      background:#fafafa;
+    }
+
+    .bp-features-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:30px;
+    }
+
+    .bp-feature{
+      background:#fff;
+      padding:40px 30px;
+      border-radius:18px;
+      text-align:center;
+      transition:.35s;
+      border:1px solid #eee;
+    }
+
+    .bp-feature:hover{
+      transform:translateY(-8px);
+      box-shadow:0 20px 40px rgba(0,0,0,.08);
+    }
+
+    .bp-feature__icon{
+      width:60px;
+      height:60px;
+      object-fit:contain;
+      margin-bottom:20px;
+    }
+
+    .bp-feature h3{
+      font-size:22px;
+      margin-bottom:12px;
+      color:#111;
+    }
+
+    .bp-feature p{
+      color:#666;
+      line-height:1.7;
+      font-size:15px;
+    }
+    @media screen and (max-width: 990px){
+      .bp-features-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media screen and (max-width: 749px){
+
+      .bp-features{
+        padding:60px 0;
+      }
+
+      .bp-features-grid{
+        grid-template-columns:1fr;
+        gap:20px;
+      }
+
+      .bp-feature{
+        padding:30px 20px;
+      }
+
+      .bp-feature h3{
+        font-size:20px;
+      }
+
+      .bp-feature p{
+        font-size:14px;
+      }
+
+    }
+
+  </style>
+
+{% schema %}
+{
+  "name": "BrandPoint Features",
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Fast delivery on all orders."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "BrandPoint Features",
+      "blocks": [
+        {
+          "type": "feature"
+        },
+        {
+          "type": "feature"
+        },
+        {
+          "type": "feature"
+        },
+        {
+          "type": "feature"
+        },
+        {
+          "type": "feature"
+        },
+        {
+          "type": "feature"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
