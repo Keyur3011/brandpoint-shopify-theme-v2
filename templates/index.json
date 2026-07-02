@@ -1,1 +1,50 @@
-
+{
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar"
+    },
+    "hero": {
+      "type": "hero"
+    },
+    "categories": {
+      "type": "category-grid"
+    },
+    "features": {
+      "type": "features"
+    },
+    "new_arrivals": {
+      "type": "new-arrivals"
+    },
+    "best_sellers": {
+      "type": "best-sellers"
+    },
+    "featured_slider": {
+      "type": "featured-product-slider"
+    },
+    "sale_banner": {
+      "type": "sale-banner"
+    },
+    "testimonials": {
+      "type": "testimonials"
+    },
+    "instagram": {
+      "type": "instagram-feed"
+    },
+    "footer": {
+      "type": "footer"
+    }
+  },
+  "order": [
+    "announcement",
+    "hero",
+    "categories",
+    "features",
+    "new_arrivals",
+    "best_sellers",
+    "featured_slider",
+    "sale_banner",
+    "testimonials",
+    "instagram",
+    "footer"
+  ]
+}
