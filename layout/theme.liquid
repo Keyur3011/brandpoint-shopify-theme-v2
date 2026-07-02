@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
+  <meta name="theme-color" content="#000000">
+  <link rel="preconnect" href="https://cdn.shopify.com">
+
   <title>
     {{ page_title }}
     {% if current_tags %} – {{ current_tags | join: ', ' }}{% endif %}
@@ -14,10 +17,13 @@
   {{ content_for_header }}
 
   {{ 'theme.css' | asset_url | stylesheet_tag }}
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+  {{ 'animations.css' | asset_url | stylesheet_tag }}
 </head>
 
 <body>
 
+  {% section 'announcement-bar' %}
   {% section 'header' %}
 
   <main id="MainContent">
