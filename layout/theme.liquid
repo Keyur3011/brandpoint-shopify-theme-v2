@@ -34,37 +34,76 @@
 
   {{ 'app.js' | asset_url | script_tag }}
 
-  <!-- Upgrade: Fully Isolated Variant Fix For Custom Home-Page Themes Starts -->
   <script>
   (function() {
-    function forceVariantUpdate() {
+    // 1. फोटो ऑटो-चेंज करने का फंक्शन (जब ग्राहक कलर बटन पर क्लिक करे)
+    function handleColorImageSwap(selectedColor) {
+      if (!selectedColor) return;
+      const cleanColor = selectedColor.toLowerCase().trim();
+      const allImages = document.querySelectorAll('img');
+      
+      allImages.forEach(img => {
+        const altText = (img.getAttribute('alt') || '').toLowerCase();
+        const srcText = img.src.toLowerCase();
+        if (altText.includes(cleanColor) || srcText.includes(cleanColor)) {
+          // आपकी थीम की मुख्य प्रोडक्ट इमेजेस के अलग-अलग पॉसिबल सेलेक्टर्स
+          const mainImage = document.querySelector('.product__media img, .bp-slide-image img, [data-main-product-image], .shopify-product-form img');
+          if (mainImage && img.src !== mainImage.src) {
+            mainImage.src = img.src;
+            if (mainImage.srcset && img.srcset) mainImage.srcset = img.srcset;
+            console.log("Image auto-swapped for color: " + selectedColor);
+          }
+        }
+      });
+    }
+
+    // 2. साइज-कलर लॉक करने और कार्ट में सही वैल्यू भेजने का मास्टर फंक्शन
+    function lockOptionsAndFixCart() {
       const params = new URLSearchParams(window.location.search);
       const currentVariantId = params.get('variant');
       
-      // यह आपकी थीम के सभी छिपे हुए इनपुट्स (जैसे XXL, XL) को ढूंढकर फिक्स करेगा
+      // यह बैकएंड में 'Add to Cart' के हिडन इनपुट्स को सही वेरिएंट आईडी पर लॉक रखेगा
       const hiddenInputs = document.querySelectorAll('input[name="id"]');
-      
       if (currentVariantId && hiddenInputs.length > 0) {
         hiddenInputs.forEach(input => {
-          input.value = currentVariantId;
+          if (input.value !== currentVariantId) {
+            input.value = currentVariantId;
+          }
         });
-        console.log("Custom Theme Fix Active: " + currentVariantId);
       }
     }
 
-    // जब भी कोई साइज (M, L, XXL) या कलर बदला जाए
-    window.addEventListener('popstate', forceVariantUpdate);
+    // जब भी कोई साइज या कलर रेडियो बटन/ड्रॉपडाउन बदला जाए
     document.addEventListener('change', function(e) {
-      if (e.target.closest('form') || e.target.matches('[name*="options"], [name="id"], input[type="radio"], select')) {
-        setTimeout(forceVariantUpdate, 150);
+      const target = e.target;
+      
+      // चेक करना कि क्या यूज़र ने कलर बदला है
+      if (target.matches('[name*="color" i], [name*="colour" i], .color-input input, [data-color-option]')) {
+        handleColorImageSwap(target.value);
+      }
+      
+      setTimeout(lockOptionsAndFixCart, 100);
+    });
+
+    // क्लिक डिटेक्शन - अगर बटन रेडियो इनपुट न होकर नॉर्मल लेबल्स (Labels) हैं
+    document.addEventListener('click', function(e) {
+      const label = e.target.closest('label, button, .variant-input');
+      if (label) {
+        const text = label.innerText.toLowerCase().trim();
+        // अगर क्लिक किए गए बटन में कलर का नाम है
+        if (text.includes('white') || text.includes('black') || text.includes('blue') || text.includes('red')) {
+          setTimeout(() => handleColorImageSwap(label.innerText), 150);
+        }
       }
     });
 
-    // सेफ्टी के लिए हर आधे सेकंड में बैकएंड ऑटो-चेक करता रहेगा
-    setInterval(forceVariantUpdate, 500);
+    // पेज लोड होने पर और ब्राउज़र बैक होने पर वैल्यू लॉक रखना
+    window.addEventListener('popstate', lockOptionsAndFixCart);
+    document.addEventListener('DOMContentLoaded', lockOptionsAndFixCart);
+    
+    // सेफ्टी रन: हर आधे सेकंड में बैकएंड ऑटो-चेक होता रहेगा ताकि साइज-कलर रीसेट न हों
+    setInterval(lockOptionsAndFixCart, 500);
   })();
   </script>
-  <!-- Upgrade Ends -->
-
-</body>
+  </body>
 </html>
