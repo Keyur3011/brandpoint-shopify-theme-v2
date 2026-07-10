@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#E03030">
   <link rel="preconnect" href="https://cdn.shopify.com">
 
   <title>
     {{ page_title }}
-    {% if current_tags %} – {{ current_tags | join: ', ' }}{% endif %}
-    {% if current_page != 1 %} – Page {{ current_page }}{% endif %}
-    {% unless page_title contains shop.name %} – {{ shop.name }}{% endunless %}
+    {% if current_tags %}- {{ current_tags | join: ', ' }}{% endif %}
+    {% if current_page != 1 %} - Page {{ current_page }}{% endif %}
+    {% unless page_title contains shop.name %} - {{ shop.name }}{% endunless %}
   </title>
 
   {{ content_for_header }}
@@ -33,6 +33,29 @@
   {% section 'footer' %}
 
   {{ 'app.js' | asset_url | script_tag }}
+
+  <!-- Variant and Size Selection Fix Code Starts -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function updateVariantId() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const variantId = urlParams.get('variant');
+      const hiddenInput = document.querySelector('input[name="id"]');
+      
+      if (variantId && hiddenInput) {
+        hiddenInput.value = variantId;
+        console.log("Global Variant Fix Applied: " + variantId);
+      }
+    }
+
+    document.addEventListener('change', function(e) {
+      if (e.target.matches('[name*="options"], [name="id"], .variant-input input, input[type="radio"]')) {
+        setTimeout(updateVariantId, 300);
+      }
+    });
+  });
+  </script>
+  <!-- Variant and Size Selection Fix Code Ends -->
 
 </body>
 </html>
