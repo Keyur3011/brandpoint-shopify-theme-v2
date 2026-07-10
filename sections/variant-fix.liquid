@@ -1,0 +1,42 @@
+<!-- Fully Isolated Variant Fix Section -->
+<script>
+(function() {
+  function forceVariantUpdate() {
+    const params = new URLSearchParams(window.location.search);
+    const currentVariantId = params.get('variant');
+    
+    // वेबसाइट पर जहां भी 'id' नाम का इनपुट छुपा है, उसे ढूंढो
+    const hiddenInputs = document.querySelectorAll('input[name="id"]');
+    
+    if (currentVariantId && hiddenInputs.length > 0) {
+      hiddenInputs.forEach(input => {
+        input.value = currentVariantId;
+      });
+      console.log("Isolated Fix: Selected variant forced to " + currentVariantId);
+    }
+  }
+
+  // जैसे ही पेज खुले या ग्राहक साइज़/कलर बदले
+  window.addEventListener('popstate', forceVariantUpdate);
+  document.addEventListener('change', function(e) {
+    if (e.target.closest('form[action*="/cart/add"]') || e.target.matches('[name*="options"], [name="id"], input[type="radio"]')) {
+      setTimeout(forceVariantUpdate, 150);
+    }
+  });
+
+  // सेफ्टी के लिए हर आधे सेकंड में बैकएंड चेक करता रहेगा
+  setInterval(forceVariantUpdate, 500);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Variant Fix Isolated",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Variant Fix Isolated"
+    }
+  ]
+}
+{% endschema %}
