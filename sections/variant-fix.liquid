@@ -1,30 +1,71 @@
-<!-- Fully Isolated Variant Fix Section -->
 <script>
 (function() {
+  // 1. फोटो ऑटो-चेंज करने का फंक्शन
+  function handleColorImageSwap(selectedColor) {
+    if (!selectedColor) return;
+    const cleanColor = selectedColor.toLowerCase().trim();
+    const allImages = document.querySelectorAll('img');
+    
+    allImages.forEach(img => {
+      const altText = (img.getAttribute('alt') || '').toLowerCase();
+      const srcText = img.src.toLowerCase();
+      
+      // अगर फोटो के नाम या Alt टेक्स्ट में वो कलर छुपा है
+      if (altText.includes(cleanColor) || srcText.includes(cleanColor)) {
+        // आपकी थीम के मुख्य प्रोडक्ट इमेज के सेलेक्टर्स
+        const mainImage = document.querySelector('.product__media img, .bp-slide-image img, [data-main-product-image], .shopify-product-form img');
+        if (mainImage && img.src !== mainImage.src) {
+          mainImage.src = img.src;
+          if (mainImage.srcset && img.srcset) mainImage.srcset = img.srcset;
+          console.log("Developer Mode: Image swapped for color -> " + selectedColor);
+        }
+      }
+    });
+  }
+
+  // 2. साइज और कलर को लॉक रखने का फंक्शन (ताकि एक चुनने पर दूसरा गायब न हो)
   function forceVariantUpdate() {
     const params = new URLSearchParams(window.location.search);
     const currentVariantId = params.get('variant');
     
-    // वेबसाइट पर जहां भी 'id' नाम का इनपुट छुपा है, उसे ढूंढो
+    // कार्ट इनपुट को लॉक करना
     const hiddenInputs = document.querySelectorAll('input[name="id"]');
-    
     if (currentVariantId && hiddenInputs.length > 0) {
       hiddenInputs.forEach(input => {
-        input.value = currentVariantId;
+        if (input.value !== currentVariantId) {
+          input.value = currentVariantId;
+        }
       });
-      console.log("Isolated Fix: Selected variant forced to " + currentVariantId);
     }
   }
 
-  // जैसे ही पेज खुले या ग्राहक साइज़/कलर बदले
-  window.addEventListener('popstate', forceVariantUpdate);
+  // जब कोई रेडियो बटन या सिलेक्ट ड्रापडाउन बदला जाए
   document.addEventListener('change', function(e) {
-    if (e.target.closest('form[action*="/cart/add"]') || e.target.matches('[name*="options"], [name="id"], input[type="radio"]')) {
-      setTimeout(forceVariantUpdate, 150);
+    const target = e.target;
+    
+    // अगर कलर बदला गया है
+    if (target.matches('[name*="color" i], [name*="colour" i], .color-input input, [data-color-option]')) {
+      handleColorImageSwap(target.value);
+    }
+    
+    setTimeout(forceVariantUpdate, 100);
+  });
+
+  // जब नॉर्मल कलर्स के गोल बटन (Labels) पर क्लिक हो
+  document.addEventListener('click', function(e) {
+    const label = e.target.closest('label, button, .variant-input');
+    if (label) {
+      const text = label.innerText.toLowerCase().trim();
+      // आपकी वेबसाइट पर उपलब्ध कलर्स के नाम यहाँ डालें
+      if (text.includes('white') || text.includes('black') || text.includes('blue') || text.includes('red')) {
+        setTimeout(() => handleColorImageSwap(label.innerText), 150);
+      }
     }
   });
 
-  // सेफ्टी के लिए हर आधे सेकंड में बैकएंड चेक करता रहेगा
+  // सेफ्टी रन: हर आधे सेकंड में बैकएंड चेक होता रहेगा ताकि कुछ भी रीसेट न हो
+  window.addEventListener('popstate', forceVariantUpdate);
+  document.addEventListener('DOMContentLoaded', forceVariantUpdate);
   setInterval(forceVariantUpdate, 500);
 })();
 </script>
