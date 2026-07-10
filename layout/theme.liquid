@@ -34,28 +34,37 @@
 
   {{ 'app.js' | asset_url | script_tag }}
 
-  <!-- Variant and Size Selection Fix Code Starts -->
+  <!-- Upgrade: Fully Isolated Variant Fix For Custom Home-Page Themes Starts -->
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    function updateVariantId() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const variantId = urlParams.get('variant');
-      const hiddenInput = document.querySelector('input[name="id"]');
+  (function() {
+    function forceVariantUpdate() {
+      const params = new URLSearchParams(window.location.search);
+      const currentVariantId = params.get('variant');
       
-      if (variantId && hiddenInput) {
-        hiddenInput.value = variantId;
-        console.log("Global Variant Fix Applied: " + variantId);
+      // यह आपकी थीम के सभी छिपे हुए इनपुट्स (जैसे XXL, XL) को ढूंढकर फिक्स करेगा
+      const hiddenInputs = document.querySelectorAll('input[name="id"]');
+      
+      if (currentVariantId && hiddenInputs.length > 0) {
+        hiddenInputs.forEach(input => {
+          input.value = currentVariantId;
+        });
+        console.log("Custom Theme Fix Active: " + currentVariantId);
       }
     }
 
+    // जब भी कोई साइज (M, L, XXL) या कलर बदला जाए
+    window.addEventListener('popstate', forceVariantUpdate);
     document.addEventListener('change', function(e) {
-      if (e.target.matches('[name*="options"], [name="id"], .variant-input input, input[type="radio"]')) {
-        setTimeout(updateVariantId, 300);
+      if (e.target.closest('form') || e.target.matches('[name*="options"], [name="id"], input[type="radio"], select')) {
+        setTimeout(forceVariantUpdate, 150);
       }
     });
-  });
+
+    // सेफ्टी के लिए हर आधे सेकंड में बैकएंड ऑटो-चेक करता रहेगा
+    setInterval(forceVariantUpdate, 500);
+  })();
   </script>
-  <!-- Variant and Size Selection Fix Code Ends -->
+  <!-- Upgrade Ends -->
 
 </body>
 </html>
