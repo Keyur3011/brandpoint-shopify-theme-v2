@@ -17,53 +17,63 @@
 
           <div class="bp-slide">
 
-            <a href="{{ product.url }}" class="bp-slide-card">
+            <!-- Link altered to not break form interactions -->
+            <div class="bp-slide-card-wrapper" style="position: relative; display: block;">
+              <a href="{{ product.url }}" class="bp-slide-card" style="text-decoration: none; color: inherit;">
 
-              <div class="bp-slide-image">
+                <div class="bp-slide-image">
 
-                {% if product.featured_image %}
-                  <img
-                    src="{{ product.featured_image | image_url: width: 900 }}"
-                    alt="{{ product.title }}"
-                    loading="lazy">
-                {% endif %}
-
-                {% if product.compare_at_price > product.price %}
-                  <span class="bp-sale-badge">
-                    SALE
-                  </span>
-                {% endif %}
-
-              </div>
-
-              <div class="bp-slide-content">
-
-                <h3>{{ product.title }}</h3>
-
-                <div class="bp-price-row">
-
-                  <span class="bp-price">
-                    {{ product.price | money }}
-                  </span>
+                  {% if product.featured_image %}
+                    <img
+                      src="{{ product.featured_image | image_url: width: 900 }}"
+                      alt="{{ product.title }}"
+                      loading="lazy">
+                  {% endif %}
 
                   {% if product.compare_at_price > product.price %}
-                    <del>
-                      {{ product.compare_at_price | money }}
-                    </del>
+                    <span class="bp-sale-badge">
+                      SALE
+                    </span>
                   {% endif %}
 
                 </div>
-                <div class="bp-rating">
-                  ★★★★★
+
+                <div class="bp-slide-content">
+
+                  <h3>{{ product.title }}</h3>
+
+                  <div class="bp-price-row">
+
+                    <span class="bp-price">
+                      {{ product.price | money }}
+                    </span>
+
+                    {% if product.compare_at_price > product.price %}
+                      <del>
+                        {{ product.compare_at_price | money }}
+                      </del>
+                    {% endif %}
+
+                  </div>
+                  <div class="bp-rating">
+                    ★★★★★
+                  </div>
+
                 </div>
+              </a>
 
-                <button class="bp-add-cart">
-                  Add to Cart
-                </button>
-
+              <!-- Added Proper Shopify Cart Form to fix Variant Selection Bugs -->
+              <div style="padding: 0 20px 20px 20px;">
+                {% form 'product', product %}
+                  <!-- This hidden input dynamically connects with your URL variant ID (M, L, XXL) -->
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  <button type="submit" name="add" class="bp-add-cart">
+                    Add to Cart
+                  </button>
+                {% endform %}
               </div>
 
-            </a>
+            </div>
 
           </div>
 
@@ -130,7 +140,7 @@
     }
 
     .bp-slide-content{
-      padding:20px;
+      padding:20px 20px 5px 20px; /* Adjusted padding to look exactly same with the form */
     }
 
     .bp-slide-content h3{
